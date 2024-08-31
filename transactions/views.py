@@ -20,9 +20,30 @@ class TransactionView(APIView):
                 response = self.getTransactionByType(filterVariable)
             elif(filter == 'sum'):
                 response = self.getAggregatedSumById(filterVariable)
+            else:
+                Response({"error": f"Invalid request: {filter}"}, status=status.HTTP_400_BAD_REQUEST)
             if(response==None):
                 return Response({"error": f"filter required for {filter} is not valid"}, status=status.HTTP_404_NOT_FOUND)
             return Response(response, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response(e, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+    def post(self, request, *args, **kwargs):
+        try:
+            filter = kwargs.get('filter','')
+            transaction_id = kwargs.get('filterVariable', '')
+            if(filter == 'transaction'):
+                
+                parent = None
+                amount = request.data.get("amount")
+                type = request.data.get("type")
+                if(request.data.get("parent_id")):
+                    parent_id = request.data.get("parent_id")
+                    parent  = Transaction.objects.get(id = parent_id)
+                Transaction.objects.create(id=transaction_id, amount=amount, type=type, parent=parent)
+                return Response({"status":"ok"}, status=status.HTTP_200_OK)
+        except Transaction.DoesNotExist as err:
+            return Response(err, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
             return Response(e, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     

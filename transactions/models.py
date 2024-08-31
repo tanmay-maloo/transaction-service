@@ -1,7 +1,7 @@
 from django.db import models
 
 class Transaction(models.Model):
-    id = models.CharField(max_length=255, primary_key=True)
+    id = models.CharField(max_length=255, primary_key=True, unique=True, blank=False, null=False)
     amount = models.FloatField()
     type = models.CharField(max_length=255)
     parent = models.ForeignKey('self', related_name= 'child',on_delete=models.DO_NOTHING, null=True, blank=True)
