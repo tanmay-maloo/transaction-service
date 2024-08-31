@@ -65,4 +65,6 @@ Admin is available to add, delete, view, and manipulate data in the transaction 
 
 **Benefits:**
 
-- Whenever the sum API is called, it
+- Whenever the sum API is called, it won’t take time to calculate the sum by traversing multiple transactions.
+- Recursive calls can be made as async calls post-save, so they won’t affect the existing processing and will work with very low latency.
+
