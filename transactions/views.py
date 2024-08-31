@@ -4,10 +4,6 @@ from rest_framework.response import Response
 from rest_framework import status
 from .serializers import TransactionSerializer
 
-
-def index(request):
-    return Response("Hello, world. use GET /transactionservice/transaction/<Id> to get the transaction")
-
 class TransactionView(APIView):
     def get(self, request, *args, **kwargs):
         try:
@@ -23,7 +19,7 @@ class TransactionView(APIView):
             else:
                 Response({"error": f"Invalid request: {filter}"}, status=status.HTTP_400_BAD_REQUEST)
             if(response==None):
-                return Response({"error": f"filter required for {filter} is not valid"}, status=status.HTTP_404_NOT_FOUND)
+                return Response({"error": f"filter required for {filter} is not valid"}, status=status.HTTP_400_BAD_REQUEST)
             return Response(response, status=status.HTTP_200_OK)
         except Exception as e:
             return Response(e, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

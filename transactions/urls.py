@@ -1,7 +1,6 @@
-from django.urls import path, re_path
+from django.urls import path
 from transactions import views
 
 urlpatterns = [
-    path('transaction/', views.index),
-    path('<str:filter>/<str:filterVariable>/', views.TransactionView.as_view()),
+    path('<str:filter>/<str:filterVariable>/', views.TransactionView.as_view(), name='transaction_view'),
 ]
